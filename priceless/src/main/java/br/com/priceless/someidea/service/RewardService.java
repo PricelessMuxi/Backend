@@ -31,15 +31,21 @@ public class RewardService {
     	
     	if (id != null) {
     		customer = customerRepository.findByCustomerId(id); 
-    		reward = rewardRepository.findByCustomer(customer);
-    		
-    		long rewardPoints = reward.getPoints();  		
-    		long newBalance = rewardPoints + points;
-    		
-    		reward.setPoints(newBalance);
-    		
-    		rewardRepository.save(reward);
-    		return true;
+    		if (customer != null)
+    		{
+        		reward = rewardRepository.findByCustomer(customer);
+        		
+        		if (reward != null)
+        		{
+            		long rewardPoints = reward.getPoints();  		
+            		long newBalance = rewardPoints + points;
+            		
+            		reward.setPoints(newBalance);
+            		
+            		rewardRepository.save(reward);
+            		return true;
+        		}
+    		}
     	}
     	return false;
 	}
