@@ -7,40 +7,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.priceless.someidea.persistence.entity.Customer;
 import br.com.priceless.someidea.persistence.entity.Reward;
-import br.com.priceless.someidea.persistence.repository.CustomerRepository;
 import br.com.priceless.someidea.service.RewardService;
 
 @RestController
 public class RewardController {
 
-	private CustomerRepository customerRepository;
-	
 	@Autowired
 	private RewardService rewardService;
 	
-    private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/queryPoints")
-    public Reward queryPoints(
-    		@RequestParam(value="username") String username, 
-    		@RequestParam(value="firstName") String firstName, 
-    		@RequestParam(value="lastName") String lastName) {
+    public Reward queryPoints(@RequestParam(value="username") String username) {
     
-    	Customer customer;
+    	Reward reward = rewardService.query(username);
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username);
-    	}
-    	
-//    	rewardService
-    	
-//    	RewardPoints rewardPoints = new RewardPoints(counter.incrementAndGet(), String.format(template, username), "1000");
-    	
-//        return rewardPoints;
-    	return null;
+    	return reward;
     }
     
 //    @GetMapping("/points")

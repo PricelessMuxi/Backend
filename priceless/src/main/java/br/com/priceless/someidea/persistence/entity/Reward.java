@@ -1,16 +1,30 @@
 package br.com.priceless.someidea.persistence.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Reward {
 
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long clientId;
-    private String username;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+    private Customer customer;
+    
     private long points;
 
     protected Reward() {}
     
-    public Reward(long clientId, String username, long points) {
-        this.clientId = clientId;
-        this.username = username;
+    public Reward(Customer customer, long points) {
+        this.clientId = customer.getId();
+        this.customer = customer;
         this.points = points;
     }
     
@@ -18,7 +32,7 @@ public class Reward {
     public String toString() {
         return String.format(
                 "Reward[clientId=%d, username='%s', points='%s']",
-                clientId, username, points);
+                customer.getId(), customer.getUsername(), points);
     }
 
 	public long getClientId() {
@@ -29,12 +43,12 @@ public class Reward {
 		this.clientId = clientId;
 	}
 
-	public String getUsername() {
-		return username;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public long getPoints() {
@@ -44,5 +58,6 @@ public class Reward {
 	public void setPoints(long points) {
 		this.points = points;
 	}
+
 
 }

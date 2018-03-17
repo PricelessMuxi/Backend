@@ -1,2 +1,6 @@
-C:\Users\Marcelo d'Almeida\eclipse-workspace\hackathon\priceless-artefact\src\main\java\hello\HelloController.java
-C:\Users\Marcelo d'Almeida\eclipse-workspace\hackathon\priceless-artefact\src\main\java\hello\Application.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\controller\RewardController.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\persistence\entity\Reward.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\Application.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\service\RewardService.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\persistence\entity\Customer.java
+C:\Users\Marcelo d'Almeida\eclipse-workspace\Backend\priceless\src\main\java\br\com\priceless\someidea\persistence\repository\CustomerRepository.java
