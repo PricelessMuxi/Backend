@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.priceless.someidea.persistence.entity.Redemption;
 import br.com.priceless.someidea.persistence.entity.Reward;
 import br.com.priceless.someidea.service.MockDataService;
 import br.com.priceless.someidea.service.RewardService;
@@ -35,8 +36,8 @@ public class RewardController {
     	return reward;
     }
     
-    @GetMapping("/pointsConsumptionRequest")
-    public String pointsConsumptionRequest(@RequestParam(value="username", required = true) String username, 
+    @GetMapping("/pointsRedemptionRequest")
+    public String pointsRedemptionRequest(@RequestParam(value="username", required = true) String username, 
     		@RequestParam(value="pointsToRedeem", required = true) long pointsToRedeem) {
     
     	try {
@@ -48,8 +49,29 @@ public class RewardController {
     	return "Requested";
     }
     
-    @GetMapping("/pointsConsumption")
-    public String pointsConsumptionRequest(@RequestParam(value="username", required = true) String username) {
+    @GetMapping("/pointsRedemptionRequest/all")
+    public String pointsRedemptionRequestAll(@RequestParam(value="username", required = true) String username) {
+    
+    	try {
+			rewardService.requestFullRedemption(username);
+		} catch (NotEnoughPointsToBeRedeemedException e) {
+			return e.getMessage();
+		}
+    	
+    	return "Requested";
+    }
+    
+    @GetMapping("/pointsRedemptionBalance")
+    public Redemption pointsRedemptionBalance(@RequestParam(value="username", required = true) String username, 
+    		@RequestParam(value="pointsToRedeem", required = true) long pointsToRedeem) {
+    
+    	Redemption redemption = rewardService.requestRedemptionBalance(username);
+    	
+    	return redemption;
+    }
+    
+    @GetMapping("/pointsRedemption")
+    public String pointsRedemption(@RequestParam(value="username", required = true) String username) {
     
     	try {
 			rewardService.redeem(username);

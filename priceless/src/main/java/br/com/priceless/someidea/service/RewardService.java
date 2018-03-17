@@ -65,6 +65,45 @@ public class RewardService {
     	}
 	}
 	
+	public Redemption requestRedemptionBalance(String username) {
+		
+    	Customer customer;
+    	
+    	Redemption redemption;
+    	
+    	if (username != null) {
+    		customer = customerRepository.findByUsername(username);
+
+    		redemption = redemptionRepository.findByCustomer(customer);
+
+    		return redemption;
+    	}
+    	
+    	return null;
+	}
+	
+	public void requestFullRedemption(String username) throws NotEnoughPointsToBeRedeemedException {
+		
+    	Customer customer;
+    	
+    	Reward reward;
+    	
+    	Redemption redemption;
+    	
+    	if (username != null) {
+    		customer = customerRepository.findByUsername(username);
+
+    		redemption = new Redemption();
+    		
+    		reward = rewardRepository.findByCustomer(customer);
+    		
+    		redemption.setCustomer(customer);
+    		redemption.setPointsToRedeem(reward.getPoints());
+    		
+    		redemptionRepository.save(redemption);
+    	}
+	}
+	
 	public void redeem(String username) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
