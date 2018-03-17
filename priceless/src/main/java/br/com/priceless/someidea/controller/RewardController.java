@@ -82,10 +82,4 @@ public class RewardController {
     	return "Redeemed";
     }
     
-    
-//    @GetMapping("/points")
-//    public RewardPoints greeting(@RequestParam(value="name", defaultValue="World") String name) {
-//        return new RewardPoints(counter.incrementAndGet(), String.format(template, name));
-//    }
-    
 }
