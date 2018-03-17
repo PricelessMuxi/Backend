@@ -7,6 +7,6 @@ import br.com.priceless.someidea.persistence.entity.Reward;
 
 public interface RewardRepository extends CrudRepository<Reward, Long> {
 
-	Reward findByCustomer(Customer username);
+	Reward findByCustomer(Customer customer);
 
 }
