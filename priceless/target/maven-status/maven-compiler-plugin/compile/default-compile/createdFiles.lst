@@ -1,6 +1,9 @@
 br\com\priceless\someidea\Application.class
 br\com\priceless\someidea\service\RewardService.class
+br\com\priceless\someidea\service\CustomerService.class
 br\com\priceless\someidea\controller\RewardController.class
 br\com\priceless\someidea\persistence\entity\Customer.class
+br\com\priceless\someidea\persistence\repository\RewardRepository.class
 br\com\priceless\someidea\persistence\entity\Reward.class
 br\com\priceless\someidea\persistence\repository\CustomerRepository.class
+br\com\priceless\someidea\service\MockDataService.class

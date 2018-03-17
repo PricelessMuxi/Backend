@@ -4,11 +4,16 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.priceless.someidea.persistence.entity.Redemption;
+import br.com.priceless.someidea.persistence.dto.RewardPoint;
+import br.com.priceless.someidea.persistence.entity.Customer;
 import br.com.priceless.someidea.persistence.entity.Reward;
+import br.com.priceless.someidea.service.CustomerService;
 import br.com.priceless.someidea.service.MockDataService;
 import br.com.priceless.someidea.service.RewardService;
 import br.com.priceless.someidea.service.exception.NotEnoughPointsToBeRedeemedException;
@@ -21,6 +26,9 @@ public class RewardController {
 	
 	@Autowired
 	private RewardService rewardService;
+
+	@Autowired
+	private CustomerService customerService;
 	
 	@PostConstruct
 	public void init() {
@@ -82,10 +90,38 @@ public class RewardController {
     	return "Redeemed";
     }
     
-    
-//    @GetMapping("/points")
-//    public RewardPoints greeting(@RequestParam(value="name", defaultValue="World") String name) {
-//        return new RewardPoints(counter.incrementAndGet(), String.format(template, name));
-//    }
-    
+    @PostMapping(name = "/addPoints", consumes = "application/json")
+    public String addPoints(@RequestBody RewardPoint point) {
+    	Customer customer = null;
+    	String username;
+    	long points;
+    	
+    	try
+    	{
+        	username = point.getUserName();
+        	points = point.getPoints();
+        	Reward reward = rewardService.query(username);
+        	if (reward == null)
+        	{
+        		customer = customerService.findByUserName(username);
+        		if (customer != null)
+        		{
+            		reward = new Reward();
+                	reward.setCustomer(customer);
+        		}
+        		else
+        			return "Customer not found";
+        	}
+        	reward.addPoints(points);
+        	
+    		if (rewardService.save(reward))
+    			return "Added";
+    	}
+		catch (Exception ex)
+    	{
+			return ex.getMessage();
+    	}
+		return "Not added";
+    }
+        
 }

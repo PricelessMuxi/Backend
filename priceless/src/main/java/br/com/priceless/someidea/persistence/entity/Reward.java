@@ -50,6 +50,10 @@ public class Reward {
 	public void setPoints(long points) {
 		this.points = points;
 	}
+	
+	public void addPoints(long points) {
+		setPoints(getPoints() + points);
+	}
 
 
 }
