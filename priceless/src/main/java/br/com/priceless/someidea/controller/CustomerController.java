@@ -14,7 +14,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-    @PostMapping("/customer/registration")
+    @PostMapping(value = "/customer/registration", consumes = "application/json", produces = "application/json")
     public Customer customerRegistration(@RequestBody Customer customer) {
     	
     	Customer savedCustomer = customerService.registrate(customer);

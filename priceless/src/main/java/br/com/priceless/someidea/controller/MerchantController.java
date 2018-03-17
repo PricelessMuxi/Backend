@@ -14,7 +14,7 @@ public class MerchantController {
 	@Autowired
 	private MerchantService merchantService;
 	
-    @PostMapping("/merchant/registration")
+    @PostMapping(value = "/merchant/registration", consumes = "application/json", produces = "application/json")
     public Merchant merchantRegistration(@RequestBody Merchant merchant) {
     	
     	Merchant savedMerchant = merchantService.registrate(merchant);
