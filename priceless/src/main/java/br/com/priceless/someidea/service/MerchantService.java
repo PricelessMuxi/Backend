@@ -12,9 +12,7 @@ public class MerchantService {
 	@Autowired
 	private MerchantRepository merchantRepository;
 	
-	public Merchant registrate(Long merchantId, String merchantName, Long pointsToMoneyUnit) {
-		
-		Merchant merchant = new Merchant(merchantId, merchantName, pointsToMoneyUnit);
+	public Merchant registrate(Merchant merchant) {
 		
 		merchantRepository.save(merchant);
 		

@@ -12,9 +12,7 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	public Customer registrate(Long customerId, String username, String firstName, String lastName) {
-		
-		Customer customer = new Customer(customerId, username, firstName, lastName);
+	public Customer registrate(Customer customer) {
 		
 		customerRepository.save(customer);
 		

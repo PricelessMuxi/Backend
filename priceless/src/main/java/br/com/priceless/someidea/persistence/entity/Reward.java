@@ -3,7 +3,7 @@ package br.com.priceless.someidea.persistence.entity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Reward {
@@ -11,15 +11,19 @@ public class Reward {
 	@Id
     private long clientId;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
     private Customer customer;
     
+	@ManyToOne(fetch=FetchType.EAGER)
+    private Merchant merchant;
+	
     private long points;
 
     public Reward() {}
     
-    public Reward(Customer customer, long points) {
+    public Reward(Customer customer, Merchant merchant, long points) {
         this.clientId = customer.getId();
+        this.merchant = merchant;
         this.customer = customer;
         this.points = points;
     }
@@ -27,8 +31,8 @@ public class Reward {
     @Override
     public String toString() {
         return String.format(
-                "Reward[clientId=%d, username='%s', points='%s']",
-                customer.getId(), customer.getUsername(), points);
+                "Reward[clientId=%d, merchantName='%s', username='%s', points='%s']",
+                customer.getId(), merchant.getMerchantName(), customer.getUsername(), points);
     }
 
 	public Customer getCustomer() {
@@ -50,6 +54,22 @@ public class Reward {
 	
 	public void addPoints(long points) {
 		setPoints(getPoints() + points);
+	}
+
+	public long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(long clientId) {
+		this.clientId = clientId;
+	}
+
+	public Merchant getMerchant() {
+		return merchant;
+	}
+
+	public void setMerchant(Merchant merchant) {
+		this.merchant = merchant;
 	}
 
 

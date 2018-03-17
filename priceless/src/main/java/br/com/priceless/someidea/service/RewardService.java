@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.priceless.someidea.persistence.entity.Customer;
+import br.com.priceless.someidea.persistence.entity.Merchant;
 import br.com.priceless.someidea.persistence.entity.Redemption;
 import br.com.priceless.someidea.persistence.entity.Reward;
 import br.com.priceless.someidea.persistence.repository.CustomerRepository;
+import br.com.priceless.someidea.persistence.repository.MerchantRepository;
 import br.com.priceless.someidea.persistence.repository.RedemptionRepository;
 import br.com.priceless.someidea.persistence.repository.RewardRepository;
 import br.com.priceless.someidea.service.exception.NotEnoughPointsToBeRedeemedException;
@@ -18,22 +20,28 @@ public class RewardService {
 	private CustomerRepository customerRepository;
 	
 	@Autowired
+	private MerchantRepository merchantRepository;
+	
+	@Autowired
 	private RewardRepository rewardRepository;
 	
 	@Autowired
 	private RedemptionRepository redemptionRepository;
 	
-	public boolean addPoints(Long id, Long points) {
+	public boolean addPoints(Long customerId, Long merchantId, Long points) {
 		
     	Customer customer;
+    	Merchant merchant;
     	
     	Reward reward;
     	
-    	if (id != null) {
-    		customer = customerRepository.findByCustomerId(id); 
+    	if (customerId != null && merchantId != null) {
+    		customer = customerRepository.findByCustomerId(customerId);
+    		merchant = merchantRepository.findByMerchantId(merchantId);
+    		
     		if (customer != null)
     		{
-        		reward = rewardRepository.findByCustomer(customer);
+        		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
         		
         		if (reward != null)
         		{
@@ -51,15 +59,18 @@ public class RewardService {
 	}
  
 	
-	public Reward requestBalance(Long id) {
+	public Reward requestBalance(Long customerId, Long merchantId) {
 		
     	Customer customer;
+    	Merchant merchant;
+    	
     	Reward reward;
     	
-    	if (id != null) {
-    		customer = customerRepository.findByCustomerId(id);
-
-    		reward = rewardRepository.findByCustomer(customer);
+    	if (customerId != null && merchantId != null) {
+    		customer = customerRepository.findByCustomerId(customerId);
+    		merchant = merchantRepository.findByMerchantId(merchantId);
+    		
+    		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
     	
     		return reward;
     	}
@@ -67,20 +78,22 @@ public class RewardService {
     	return null;
 	}
 	
-	public void requestRedemption(Long id, long pointsToRedeem) throws NotEnoughPointsToBeRedeemedException {
+	public void requestRedemption(Long customerId, Long merchantId, long pointsToRedeem) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
+    	Merchant merchant;
     	
     	Reward reward;
     	
     	Redemption redemption;
     	
-    	if (id != null && pointsToRedeem > 0) {
-    		customer = customerRepository.findByCustomerId(id);
+    	if (customerId != null && merchantId != null && pointsToRedeem > 0) {
+    		customer = customerRepository.findByCustomerId(customerId);
+    		merchant = merchantRepository.findByMerchantId(merchantId);
 
     		redemption = new Redemption();
     		
-    		reward = rewardRepository.findByCustomer(customer);
+    		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
     		
     		if (reward.getPoints() < pointsToRedeem) {
     			throw new NotEnoughPointsToBeRedeemedException(reward.getPoints());
@@ -110,20 +123,22 @@ public class RewardService {
     	return null;
 	}
 	
-	public void requestFullRedemption(Long id) throws NotEnoughPointsToBeRedeemedException {
+	public void requestFullRedemption(Long customerId, Long merchantId) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
+    	Merchant merchant;
     	
     	Reward reward;
     	
     	Redemption redemption;
     	
-    	if (id != null) {
-    		customer = customerRepository.findByCustomerId(id);
-
+    	if (customerId != null && merchantId != null) {
+    		customer = customerRepository.findByCustomerId(customerId);
+    		merchant = merchantRepository.findByMerchantId(merchantId);
+    		
     		redemption = new Redemption();
     		
-    		reward = rewardRepository.findByCustomer(customer);
+    		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
     		
     		redemption.setCustomer(customer);
     		redemption.setPointsToRedeem(reward.getPoints());
@@ -132,20 +147,22 @@ public class RewardService {
     	}
 	}
 	
-	public void redeem(Long id) throws NotEnoughPointsToBeRedeemedException {
+	public void redeem(Long customerId, Long merchantId) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
+    	Merchant merchant;
     	
     	Reward reward;
     	
     	Redemption redemption;
     	
-    	if (id != null) {
-    		customer = customerRepository.findByCustomerId(id); 
+    	if (customerId != null && merchantId != null) {
+    		customer = customerRepository.findByCustomerId(customerId);
+    		merchant = merchantRepository.findByMerchantId(merchantId);
     				
     		redemption = redemptionRepository.findByCustomer(customer);
 
-    		reward = rewardRepository.findByCustomer(customer);
+    		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
     		
     		long rewardPoints = reward.getPoints();
     		long redemptionPoints = redemption.getPointsToRedeem();

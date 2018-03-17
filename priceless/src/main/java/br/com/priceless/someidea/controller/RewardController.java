@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.priceless.someidea.persistence.dto.RewardPoint;
 import br.com.priceless.someidea.persistence.entity.Redemption;
 import br.com.priceless.someidea.persistence.entity.Reward;
-import br.com.priceless.someidea.service.CustomerService;
 import br.com.priceless.someidea.service.MockDataService;
 import br.com.priceless.someidea.service.RewardService;
 import br.com.priceless.someidea.service.exception.NotEnoughPointsToBeRedeemedException;
@@ -26,9 +25,6 @@ public class RewardController {
 	@Autowired
 	private RewardService rewardService;
 
-	@Autowired
-	private CustomerService customerService;
-	
 	@PostConstruct
 	public void init() {
 		mockDataServiceService.runMockH2Database();
@@ -36,19 +32,23 @@ public class RewardController {
 	
 	
     @GetMapping("/pointsBalance")
-    public Reward pointsBalance(@RequestParam(value="id", required = true) Long id) {
+    public Reward pointsBalance(
+    		@RequestParam(value="customerId", required = true) Long customerId,
+    		@RequestParam(value="merchantId", required = true) Long merchantId) {
     
-    	Reward reward = rewardService.requestBalance(id);
+    	Reward reward = rewardService.requestBalance(customerId, merchantId);
     	
     	return reward;
     }
     
     @GetMapping("/pointsRedemptionRequest")
-    public String pointsRedemptionRequest(@RequestParam(value="id", required = true) Long id, 
+    public String pointsRedemptionRequest(
+    		@RequestParam(value="customerId", required = true) Long customerId,
+    		@RequestParam(value="merchantId", required = true) Long merchantId,
     		@RequestParam(value="pointsToRedeem", required = true) long pointsToRedeem) {
     
     	try {
-			rewardService.requestRedemption(id, pointsToRedeem);
+			rewardService.requestRedemption(customerId, merchantId, pointsToRedeem);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -57,10 +57,12 @@ public class RewardController {
     }
     
     @GetMapping("/pointsRedemptionRequest/all")
-    public String pointsRedemptionRequestAll(@RequestParam(value="id", required = true) Long id) {
+    public String pointsRedemptionRequestAll(
+    		@RequestParam(value="customerId", required = true) Long customerId,
+    		@RequestParam(value="merchantId", required = true) Long merchantId) {
     
     	try {
-			rewardService.requestFullRedemption(id);
+			rewardService.requestFullRedemption(customerId, merchantId);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -78,10 +80,12 @@ public class RewardController {
     }
     
     @GetMapping("/pointsRedemption")
-    public String pointsRedemption(@RequestParam(value="id", required = true) Long id) {
+    public String pointsRedemption(
+    		@RequestParam(value="customerId", required = true) Long customerId,
+    		@RequestParam(value="merchantId", required = true) Long merchantId) {
     
     	try {
-			rewardService.redeem(id);
+			rewardService.redeem(customerId, merchantId);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -93,7 +97,7 @@ public class RewardController {
     public String addPoints(@RequestBody RewardPoint point) {    	
     	try
     	{
-    		if (rewardService.addPoints(point.getId(), point.getPoints()))
+    		if (rewardService.addPoints(point.getCustomerId(), point.getMerchantId(), point.getPoints()))
     			return "Added";
     	}
 		catch (Exception ex)

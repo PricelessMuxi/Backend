@@ -34,7 +34,6 @@ public class MockDataService {
 		
     	Customer customer = new Customer();
     	
-    	customer.setId(1L);
     	customer.setCustomerId(38893307707L);
     	customer.setUsername("blopa");
     	customer.setFirstName("Pablo");
