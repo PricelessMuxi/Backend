@@ -45,6 +45,7 @@ public class MockDataService {
     	Reward reward = new Reward();
     	
     	reward.setCustomer(customer);
+    	reward.setMerchant(merchant);
     	reward.setPoints(1000L);
     	
     	rewardRepository.save(reward);
