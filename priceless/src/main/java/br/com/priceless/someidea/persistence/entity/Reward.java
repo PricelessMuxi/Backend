@@ -2,8 +2,6 @@ package br.com.priceless.someidea.persistence.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
@@ -11,7 +9,6 @@ import javax.persistence.OneToOne;
 public class Reward {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private long clientId;
 	
 	@OneToOne(fetch=FetchType.EAGER)

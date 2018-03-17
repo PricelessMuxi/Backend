@@ -23,13 +23,13 @@ public class RewardService {
 	@Autowired
 	private RedemptionRepository redemptionRepository;
 	
-	public Reward requestBalance(String username) {
+	public Reward requestBalance(Long id) {
 		
     	Customer customer;
     	Reward reward;
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username);
+    	if (id != null) {
+    		customer = customerRepository.findByCustomerId(id);
 
     		reward = rewardRepository.findByCustomer(customer);
     	
@@ -39,7 +39,7 @@ public class RewardService {
     	return null;
 	}
 	
-	public void requestRedemption(String username, long pointsToRedeem) throws NotEnoughPointsToBeRedeemedException {
+	public void requestRedemption(Long id, long pointsToRedeem) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
     	
@@ -47,8 +47,8 @@ public class RewardService {
     	
     	Redemption redemption;
     	
-    	if (username != null && pointsToRedeem > 0) {
-    		customer = customerRepository.findByUsername(username);
+    	if (id != null && pointsToRedeem > 0) {
+    		customer = customerRepository.findByCustomerId(id);
 
     		redemption = new Redemption();
     		
@@ -65,14 +65,14 @@ public class RewardService {
     	}
 	}
 	
-	public Redemption requestRedemptionBalance(String username) {
+	public Redemption requestRedemptionBalance(Long id) {
 		
     	Customer customer;
     	
     	Redemption redemption;
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username);
+    	if (id != null) {
+    		customer = customerRepository.findByCustomerId(id);
 
     		redemption = redemptionRepository.findByCustomer(customer);
 
@@ -82,7 +82,7 @@ public class RewardService {
     	return null;
 	}
 	
-	public void requestFullRedemption(String username) throws NotEnoughPointsToBeRedeemedException {
+	public void requestFullRedemption(Long id) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
     	
@@ -90,8 +90,8 @@ public class RewardService {
     	
     	Redemption redemption;
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username);
+    	if (id != null) {
+    		customer = customerRepository.findByCustomerId(id);
 
     		redemption = new Redemption();
     		
@@ -104,7 +104,7 @@ public class RewardService {
     	}
 	}
 	
-	public void redeem(String username) throws NotEnoughPointsToBeRedeemedException {
+	public void redeem(Long id) throws NotEnoughPointsToBeRedeemedException {
 		
     	Customer customer;
     	
@@ -112,8 +112,8 @@ public class RewardService {
     	
     	Redemption redemption;
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username); 
+    	if (id != null) {
+    		customer = customerRepository.findByCustomerId(id); 
     				
     		redemption = redemptionRepository.findByCustomer(customer);
 

@@ -8,6 +8,8 @@ import br.com.priceless.someidea.persistence.entity.Customer;
 
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
+	Customer findByCustomerId(Long id);
+	
 	Customer findByUsername(String username);
 	
 	List<Customer> findByFirstName(String firstName);
