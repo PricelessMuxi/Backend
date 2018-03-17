@@ -5,7 +5,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -20,7 +19,7 @@ public class Reward {
     
     private long points;
 
-    protected Reward() {}
+    public Reward() {}
     
     public Reward(Customer customer, long points) {
         this.clientId = customer.getId();
@@ -35,20 +34,13 @@ public class Reward {
                 customer.getId(), customer.getUsername(), points);
     }
 
-	public long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
-	}
-
 	public Customer getCustomer() {
 		return customer;
 	}
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+		this.clientId = customer.getId();
 	}
 
 	public long getPoints() {

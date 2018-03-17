@@ -9,7 +9,7 @@ import br.com.priceless.someidea.persistence.repository.CustomerRepository;
 import br.com.priceless.someidea.persistence.repository.RewardRepository;
 
 @Service
-public class RewardService {
+public class MockDataService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -17,20 +17,23 @@ public class RewardService {
 	@Autowired
 	private RewardRepository rewardRepository;
 	
-	public Reward query(String username) {
+	public void runMockH2Database() {
 		
-    	Customer customer;
-    	Reward reward;
+    	Customer customer = new Customer();
     	
-    	if (username != null) {
-    		customer = customerRepository.findByUsername(username);
-
-    		reward = rewardRepository.findByCustomer(customer);
+    	customer.setId(1L);
+    	customer.setUsername("blopa");
+    	customer.setFirstName("Pablo");
+    	customer.setLastName("Montenegro");
     	
-    		return reward;
-    	}
+    	customerRepository.save(customer);
     	
-    	return null;
+    	Reward reward = new Reward();
+    	
+    	reward.setCustomer(customer);
+    	reward.setPoints(1000L);
+    	
+    	rewardRepository.save(reward);
 	}
 	
 }
