@@ -97,7 +97,7 @@ public class RewardController {
     public String addPoints(@RequestBody RewardPoint point) {    	
     	try
     	{
-    		if (rewardService.addPoints(point.getCustomerId(), point.getMerchantId(), point.getPoints()))
+    		if (rewardService.addPoints(point))
     			return "Added";
     	}
 		catch (Exception ex)

@@ -3,6 +3,7 @@ package br.com.priceless.someidea.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.priceless.someidea.persistence.dto.RewardPoint;
 import br.com.priceless.someidea.persistence.entity.Customer;
 import br.com.priceless.someidea.persistence.entity.Merchant;
 import br.com.priceless.someidea.persistence.entity.Redemption;
@@ -28,33 +29,32 @@ public class RewardService {
 	@Autowired
 	private RedemptionRepository redemptionRepository;
 	
-	public boolean addPoints(Long customerId, Long merchantId, Long points) {
+	public boolean addPoints(RewardPoint point) {
 		
     	Customer customer;
+    	Reward reward;
     	Merchant merchant;
     	
-    	Reward reward;
+    	merchant = merchantRepository.findByMerchantId(point.getMerchantId());
     	
-    	if (customerId != null && merchantId != null) {
-    		customer = customerRepository.findByCustomerId(customerId);
-    		merchant = merchantRepository.findByMerchantId(merchantId);
-    		
-    		if (customer != null)
+		customer = customerRepository.findByCustomerId(point.getCustomerId());
+		
+		if ((merchant != null) && (customer != null))
+		{
+    		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
+    		if (reward != null)
     		{
-        		reward = rewardRepository.findByCustomerAndMerchant(customer, merchant);
-        		
-        		if (reward != null)
-        		{
-            		long rewardPoints = reward.getPoints();  		
-            		long newBalance = rewardPoints + points;
-            		
-            		reward.setPoints(newBalance);
-            		
-            		rewardRepository.save(reward);
-            		return true;
-        		}
+        		long rewardPoints = reward.getPoints();  		
+        		long newBalance = rewardPoints + (long)  (merchant.getPointsToMoneyUnit() * point.getValue());
+        		reward.setPoints(newBalance);
     		}
-    	}
+    		else
+    			reward = new Reward(customer, merchant, (long)  (merchant.getPointsToMoneyUnit() * point.getValue()));
+    		
+    		rewardRepository.save(reward);
+        	
+    		return true;
+		}
     	return false;
 	}
  

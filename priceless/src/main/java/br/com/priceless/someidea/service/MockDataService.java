@@ -43,7 +43,7 @@ public class MockDataService {
     	customerRepository.save(customer);
     	
     	Reward reward = new Reward();
-    	
+    	reward.setMerchant(merchant);
     	reward.setCustomer(customer);
     	reward.setPoints(1000L);
     	

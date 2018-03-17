@@ -4,31 +4,31 @@ public class RewardPoint {
 	
 	private Long customerId;
 	private Long merchantId;
-	private Long points;
+	private Float value;
 	
-	public Long getCustomerId() {
-		return customerId;
-	}
-	
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-	
-	public Long getMerchantId() {
+	public Long getMerchantId()
+	{
 		return merchantId;
 	}
 	
-	public void setMerchantId(Long merchantId) {
+	public void setMerchantId(Long merchantId)
+	{
 		this.merchantId = merchantId;
 	}
-	
-	public Long getPoints() {
-		return points;
+
+	public Float getValue() {
+		return value;
 	}
-	
-	public void setPoints(Long points) {
-		this.points = points;
+
+	public void setValue(Float value) {
+		this.value = value;
 	}
-	
-	
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
 }
