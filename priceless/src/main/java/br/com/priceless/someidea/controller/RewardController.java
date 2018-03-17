@@ -4,11 +4,15 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.priceless.someidea.persistence.dto.RewardPoint;
 import br.com.priceless.someidea.persistence.entity.Redemption;
 import br.com.priceless.someidea.persistence.entity.Reward;
+import br.com.priceless.someidea.service.CustomerService;
 import br.com.priceless.someidea.service.MockDataService;
 import br.com.priceless.someidea.service.RewardService;
 import br.com.priceless.someidea.service.exception.NotEnoughPointsToBeRedeemedException;
@@ -21,6 +25,9 @@ public class RewardController {
 	
 	@Autowired
 	private RewardService rewardService;
+
+	@Autowired
+	private CustomerService customerService;
 	
 	@PostConstruct
 	public void init() {
@@ -82,4 +89,18 @@ public class RewardController {
     	return "Redeemed";
     }
     
+    @PostMapping(name = "/addPoints", consumes = "application/json")
+    public String addPoints(@RequestBody RewardPoint point) {    	
+    	try
+    	{
+    		if (rewardService.addPoints(point.getId(), point.getPoints()))
+    			return "Added";
+    	}
+		catch (Exception ex)
+    	{
+			return ex.getMessage();
+    	}
+		return "Not added";
+    }
+        
 }

@@ -23,6 +23,34 @@ public class RewardService {
 	@Autowired
 	private RedemptionRepository redemptionRepository;
 	
+	public boolean addPoints(Long id, Long points) {
+		
+    	Customer customer;
+    	
+    	Reward reward;
+    	
+    	if (id != null) {
+    		customer = customerRepository.findByCustomerId(id); 
+    		if (customer != null)
+    		{
+        		reward = rewardRepository.findByCustomer(customer);
+        		
+        		if (reward != null)
+        		{
+            		long rewardPoints = reward.getPoints();  		
+            		long newBalance = rewardPoints + points;
+            		
+            		reward.setPoints(newBalance);
+            		
+            		rewardRepository.save(reward);
+            		return true;
+        		}
+    		}
+    	}
+    	return false;
+	}
+ 
+	
 	public Reward requestBalance(Long id) {
 		
     	Customer customer;

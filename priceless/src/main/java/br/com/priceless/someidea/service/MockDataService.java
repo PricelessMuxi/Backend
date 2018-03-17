@@ -39,6 +39,7 @@ public class MockDataService {
     	customer.setUsername("blopa");
     	customer.setFirstName("Pablo");
     	customer.setLastName("Montenegro");
+    	customer.setCustomerId(38893307707L);
     	
     	customerRepository.save(customer);
     	
