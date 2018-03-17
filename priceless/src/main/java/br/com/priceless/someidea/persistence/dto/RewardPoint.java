@@ -2,17 +2,17 @@ package br.com.priceless.someidea.persistence.dto;
 
 public class RewardPoint {
 	
-	private String username;
-	private long points;
+	private Long id;
+	private Long points;
 	
-	public String getUserName()
+	public Long getId()
 	{
-		return username;
+		return id;
 	}
 	
-	public void setUserName(String username)
+	public void setId(Long id)
 	{
-		this.username = username;
+		this.id = id;
 	}
 
 	public long getPoints() {

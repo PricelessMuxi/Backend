@@ -37,19 +37,19 @@ public class RewardController {
 	
 	
     @GetMapping("/pointsBalance")
-    public Reward pointsBalance(@RequestParam(value="username", required = true) String username) {
+    public Reward pointsBalance(@RequestParam(value="id", required = true) Long id) {
     
-    	Reward reward = rewardService.requestBalance(username);
+    	Reward reward = rewardService.requestBalance(id);
     	
     	return reward;
     }
     
     @GetMapping("/pointsRedemptionRequest")
-    public String pointsRedemptionRequest(@RequestParam(value="username", required = true) String username, 
+    public String pointsRedemptionRequest(@RequestParam(value="id", required = true) Long id, 
     		@RequestParam(value="pointsToRedeem", required = true) long pointsToRedeem) {
     
     	try {
-			rewardService.requestRedemption(username, pointsToRedeem);
+			rewardService.requestRedemption(id, pointsToRedeem);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -58,10 +58,10 @@ public class RewardController {
     }
     
     @GetMapping("/pointsRedemptionRequest/all")
-    public String pointsRedemptionRequestAll(@RequestParam(value="username", required = true) String username) {
+    public String pointsRedemptionRequestAll(@RequestParam(value="id", required = true) Long id) {
     
     	try {
-			rewardService.requestFullRedemption(username);
+			rewardService.requestFullRedemption(id);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -70,19 +70,19 @@ public class RewardController {
     }
     
     @GetMapping("/pointsRedemptionBalance")
-    public Redemption pointsRedemptionBalance(@RequestParam(value="username", required = true) String username, 
+    public Redemption pointsRedemptionBalance(@RequestParam(value="id", required = true) Long id, 
     		@RequestParam(value="pointsToRedeem", required = true) long pointsToRedeem) {
     
-    	Redemption redemption = rewardService.requestRedemptionBalance(username);
+    	Redemption redemption = rewardService.requestRedemptionBalance(id);
     	
     	return redemption;
     }
     
     @GetMapping("/pointsRedemption")
-    public String pointsRedemption(@RequestParam(value="username", required = true) String username) {
+    public String pointsRedemption(@RequestParam(value="id", required = true) Long id) {
     
     	try {
-			rewardService.redeem(username);
+			rewardService.redeem(id);
 		} catch (NotEnoughPointsToBeRedeemedException e) {
 			return e.getMessage();
 		}
@@ -91,30 +91,10 @@ public class RewardController {
     }
     
     @PostMapping(name = "/addPoints", consumes = "application/json")
-    public String addPoints(@RequestBody RewardPoint point) {
-    	Customer customer = null;
-    	String username;
-    	long points;
-    	
+    public String addPoints(@RequestBody RewardPoint point) {    	
     	try
     	{
-        	username = point.getUserName();
-        	points = point.getPoints();
-        	Reward reward = rewardService.query(username);
-        	if (reward == null)
-        	{
-        		customer = customerService.findByUserName(username);
-        		if (customer != null)
-        		{
-            		reward = new Reward();
-                	reward.setCustomer(customer);
-        		}
-        		else
-        			return "Customer not found";
-        	}
-        	reward.addPoints(points);
-        	
-    		if (rewardService.save(reward))
+    		if (rewardService.addPoints(point.getId(), point.getPoints()))
     			return "Added";
     	}
 		catch (Exception ex)

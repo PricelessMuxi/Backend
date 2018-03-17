@@ -1,21 +1,26 @@
 package br.com.priceless.someidea.persistence.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Customer {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    private Long customerId;
     private String username;
     private String firstName;
     private String lastName;
 
     public Customer() {}
 
-    public Customer(String username, String firstName, String lastName) {
-        this.username = username;
+    public Customer(Long customerId, String username, String firstName, String lastName) {
+        this.customerId = customerId;
+    	this.username = username;
     	this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -23,8 +28,8 @@ public class Customer {
     @Override
     public String toString() {
         return String.format(
-                "Customer[id=%d, username='%s', firstName='%s', lastName='%s']",
-                id, username, firstName, lastName);
+                "Customer[id=%d, customerId=%d, username='%s', firstName='%s', lastName='%s']",
+                id, customerId, username, firstName, lastName);
     }
 
 	public Long getId() {
@@ -57,6 +62,14 @@ public class Customer {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 
 }
